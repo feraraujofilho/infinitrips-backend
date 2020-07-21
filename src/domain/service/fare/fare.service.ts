@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { FareRepository } from 'infrastructure/repository/fare/Fare.repository'
+import { FareRepository } from 'infrastructure/repository/fare/fare.repository'
 import { FareEntity } from 'domain/model/fare/fare.entity'
 import { RequestFaresParametersDto } from 'infrastructure/controller/fare/dto/requestFaresParametersDto'
 
