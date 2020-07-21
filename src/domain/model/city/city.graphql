@@ -1,0 +1,16 @@
+type City {
+	id: Int!
+	name: String!
+	abb: String
+}
+
+type Query {
+	cities: [City]
+	originAndDestinations(
+		origin: String
+		destination1: String
+		destination2: String
+		destination3: String
+		destination4: String
+	): [City]
+}

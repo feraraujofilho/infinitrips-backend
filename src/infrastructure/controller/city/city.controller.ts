@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { CityService } from 'domain/service/city/city.entity';
+import { CityService } from 'domain/service/city/city.service';
 import { CityEntity } from 'domain/model/city/city.entity';
 
 @Controller("/cities")

@@ -1,0 +1,12 @@
+type Fare {
+    id: Int!
+    origin: String!
+    destination: String!
+    month: String!
+    day: String!
+    price: Int!
+}
+
+type Query {
+    fares(origin: String!, destination1: String!, destination2: String): [Fare]
+}

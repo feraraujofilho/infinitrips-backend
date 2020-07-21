@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '../../controller/app/app.controller';
-import { AppService } from '../../../domain/service/app/app.service';
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
 import { FareModule } from 'infrastructure/module/fare/fare.module';
 import { FareEntity } from 'domain/model/fare/fare.entity';
 import { CityModule } from 'infrastructure/module/city/city.module';
@@ -20,8 +19,11 @@ require('dotenv-flow').config()
     database: process.env.DATABASE_NAME,
     entities: [FareEntity, CityEntity],
     synchronize: false,
-  }), FareModule, CityModule],
-  controllers: [AppController],
-  providers: [AppService],
+  }), GraphQLModule.forRoot({
+    typePaths: ['./**/*.graphql'],
+  }),
+  FareModule, CityModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

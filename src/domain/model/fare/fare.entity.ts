@@ -18,5 +18,5 @@ export class FareEntity {
   'day': string
 
   @Column()
-  'price': string
+  'price': number
 }
