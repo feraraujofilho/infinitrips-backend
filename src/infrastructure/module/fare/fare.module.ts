@@ -1,10 +1,10 @@
-import { FareRepository } from './../../repository/fare/Fare.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common'
 import { FareEntity } from 'domain/model/fare/fare.entity';
 import { FareService } from 'domain/service/fare/fare.service';
 import { FareController } from 'infrastructure/controller/fare/fare.controller';
 import { FareResolver } from 'infrastructure/resolver/fare.resolver';
+import { FareRepository } from 'infrastructure/repository/fare/Fare.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([FareEntity, FareRepository])],
@@ -12,4 +12,4 @@ import { FareResolver } from 'infrastructure/resolver/fare.resolver';
   providers: [FareService, FareResolver],
   exports: [],
 })
-export class FareModule {}
+export class FareModule { }

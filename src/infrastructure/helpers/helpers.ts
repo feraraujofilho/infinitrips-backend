@@ -7,6 +7,7 @@ const formatDate = (date) => {
     let d = new Date(date),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
+    // eslint-disable-next-line prefer-const
     year = d.getFullYear()
     
     if (month.length < 2) 
