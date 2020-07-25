@@ -21,31 +21,37 @@ const formatDate = (date) => {
   return [year, month, day].join('-');
 }
 
-const filterFlights = async (data, origin, destinations, nights): Promise<any[]> => {
+const filterFlights = async (data: FareEntity[], origin: string, destinations: string[], nights: number): Promise<any[]> => {
 
-  let today = formatDate(new Date())
+  let departureDate = formatDate(new Date())
   const referenceStartDate = formatDate(new Date())
 
   const arr = []
 
   const filteredData = data.filter(value => destinations.includes(value.origin) || destinations.includes(value.destination))
 
-  while (today !== formatDate(addDays(new Date(referenceStartDate), 180))) {
+  while (departureDate !== formatDate(addDays(new Date(referenceStartDate), 180))) {
     for (let i = 0; i < destinations.length; i++) {
-      const roundTrip = filteredData.filter(flight => (flight.origin === origin && flight.destination === destinations[i] && flight.day.includes(today)) || (flight.origin === destinations[i] && flight.destination === origin && flight.day.includes(formatDate(addDays(new Date(today), nights)))))
-      if (roundTrip.length === 2) {
+      const roundTrip = filteredData.filter(flight => (flight.origin === origin && flight.destination === destinations[i] && flight.day.includes(departureDate)) || (flight.origin === destinations[i] && flight.destination === origin && flight.day.includes(formatDate(addDays(new Date(departureDate), nights)))))
 
-        const arrEl = arr.find(el => el.date.startsWith(today))
+      if (roundTrip.length === 2) {
+        const arrEl = arr.find(el => el.departuredate.includes(departureDate))
+
         if (arrEl) {
           arrEl[i] = Number(roundTrip[0].price) + Number(roundTrip[1].price)
         }
         else {
-          arr.push({ date: `${today} - ${formatDate(addDays(new Date(today), nights))}`, [i]: Number(roundTrip[0].price) + Number(roundTrip[1].price) })
+          let departureDateInRightFormat = new Date(departureDate)
+
+          let returnDate = formatDate(addDays(departureDateInRightFormat, nights))
+          const returnDateInRightFormat = new Date(returnDate)
+          
+          arr.push({ departuredate: `${departureDateInRightFormat.toLocaleString('en-us', { weekday: 'long' })} - ${departureDate}`, returndate: `${returnDateInRightFormat.toLocaleString('en-us', { weekday: 'long' })} - ${returnDate}`, [i]: Number(roundTrip[0].price) + Number(roundTrip[1].price) })
         }
       }
 
     }
-    today = formatDate(addDays(new Date(today), 1))
+    departureDate = formatDate(addDays(new Date(departureDate), 1))
   }
 
   return arr
@@ -67,7 +73,7 @@ export class FareService {
   async findManyFromRequest(requestFaresParametersDto: RequestFaresParametersDto): Promise<any[]> {
     const { origin, destination1, destination2, destination3, destination4, nights } = requestFaresParametersDto
 
-    const test = await this.fareRepository.find({
+    const allFares = await this.fareRepository.find({
       where: [
         { origin, destination: destination1 },
         { origin: destination1, destination: origin },
@@ -80,7 +86,7 @@ export class FareService {
       ]
     })
 
-    return filterFlights(test, origin, [destination1, destination2, destination3, destination4], nights)
+    return filterFlights(allFares, origin, [destination1, destination2, destination3, destination4], nights)
   }
 
   getManyByMatch(origin: string, destination1: string, destination2: string): Promise<FareEntity[]> {
