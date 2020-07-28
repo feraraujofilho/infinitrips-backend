@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { FareRepository } from 'infrastructure/repository/fare/fare.repository'
 import { FareEntity } from 'domain/model/fare/fare.entity'
 import { RequestFaresParametersDto } from 'infrastructure/controller/fare/dto/requestFaresParametersDto'
-import { resourceUsage } from 'process'
 
 function addDays(myDate, days) {
   return new Date(myDate.getTime() + days * 24 * 60 * 60 * 1000);
